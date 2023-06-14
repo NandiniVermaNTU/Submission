@@ -32,7 +32,7 @@ var (
 	messages         []Message
 	messagesLock     sync.Mutex
 	db               *sql.DB
-	messageQueueSize = 100 // Adjust the queue size based on your requirements
+	messageQueueSize = 100 // Queue size is adjustible based on your requirements
 )
 
 // Generate a unique ID for the message
@@ -43,13 +43,17 @@ func generateUniqueID() int {
 	return len(messages) + 1
 }
 
-// Save the message to the messages table in the database
 func storeMessage(db *sql.DB, sender, recipient, content string) error {
-	_, err := db.Exec(`
-		INSERT INTO messages (sender, recipient, content)
-		VALUES (?, ?, ?)
-	`, sender, recipient, content)
+	stmt, err := db.Prepare("INSERT INTO messages (sender, recipient, content) VALUES (?, ?, ?)")
 	if err != nil {
+		log.Printf("Failed to prepare statement: %v", err)
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(sender, recipient, content)
+	if err != nil {
+		log.Printf("Failed to store message: %v", err)
 		return err
 	}
 
@@ -111,22 +115,21 @@ func SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 // Handle function for fetching messages for a recipient
 func FetchMessagesHandler(w http.ResponseWriter, r *http.Request) {
 	recipient := r.URL.Query().Get("recipient")
-	messages, err := filterMessagesByRecipient(recipient, db)
+	filteredMessages, err := filterMessagesByRecipient(recipient, db)
 	if err != nil {
 		log.Printf("Failed to fetch messages: %v", err)
 		http.Error(w, "Failed to fetch messages", http.StatusInternalServerError)
 		return
 	}
 
-	// Add the retrieved messages to the message queue
 	messagesLock.Lock()
-	messages = append(messages, messages...)
-	if len(messages) > messageQueueSize {
-		messages = messages[len(messages)-messageQueueSize:]
+	filteredMessages = append(filteredMessages, filteredMessages...) // Use 'filteredMessages' instead of 'messages'
+	if len(filteredMessages) > messageQueueSize {
+		filteredMessages = filteredMessages[len(filteredMessages)-messageQueueSize:]
 	}
 	messagesLock.Unlock()
 
-	response := Messages{Data: messages}
+	response := Messages{Data: filteredMessages}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -167,7 +170,7 @@ func main() {
 	}
 	defer db.Close()
 
-	// Create the messages table if it doesn't exist
+	// Create the messages table
 	_, err = db.Exec(`
 		CREATE TABLE IF NOT EXISTS messages (
 			id INT AUTO_INCREMENT PRIMARY KEY,

@@ -26,6 +26,13 @@ type PullMessagesResponse struct {
 	Messages []*pb.Message `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages,omitempty"`
 }
 
+type Message struct {
+	Id        int32  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Sender    string `protobuf:"bytes,2,opt,name=sender,proto3" json:"sender,omitempty"`
+	Recipient string `protobuf:"bytes,3,opt,name=recipient,proto3" json:"recipient,omitempty"`
+	Content   string `protobuf:"bytes,4,opt,name=content,proto3" json:"content,omitempty"`
+}
+
 var (
 	messages     []*pb.Message
 	messagesLock sync.Mutex
@@ -95,7 +102,7 @@ func storeMessage(db *sql.DB, sender, recipient, content string) error {
 	return nil
 }
 
-// Implement the Pull RPC method
+// Implementing the Pull RPC method
 func (s *messageServiceServer) Pull(ctx context.Context, req *pb.PullRequest) (*pb.PullResponse, error) {
 	recipient := req.GetRecipient()
 
@@ -107,7 +114,7 @@ func (s *messageServiceServer) Pull(ctx context.Context, req *pb.PullRequest) (*
 	return &pb.PullResponse{Messages: filteredMessages}, nil
 }
 
-// Implement the SendMessage RPC method
+// Implementing the SendMessage RPC method
 func (s *messageServiceServer) SendMessage(ctx context.Context, req *pb.SendMessageRequest) (*pb.SendMessageResponse, error) {
 	message := &pb.Message{
 		Sender:    req.Sender,
@@ -132,7 +139,7 @@ func (s *messageServiceServer) SendMessage(ctx context.Context, req *pb.SendMess
 	return response, nil
 }
 
-// Implement the FetchMessages RPC method
+// Implementing the FetchMessages RPC method
 func (s *messageServiceServer) FetchMessages(ctx context.Context, req *pb.FetchMessagesRequest) (*pb.FetchMessagesResponse, error) {
 	recipient := req.GetRecipient()
 
@@ -152,7 +159,7 @@ func main() {
 	}
 	defer db.Close()
 
-	// Create the messages table if it doesn't exist
+	// Create the messages table
 	_, err = db.Exec(`
 		CREATE TABLE IF NOT EXISTS messages (
 			id INT AUTO_INCREMENT PRIMARY KEY,
@@ -166,7 +173,7 @@ func main() {
 		log.Fatalf("Failed to create messages table: %v", err)
 	}
 
-	// Set up the network binding
+	// Setting up the network binding
 	listen, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)

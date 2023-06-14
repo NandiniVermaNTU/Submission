@@ -1,10 +1,10 @@
-# Use the official Golang image as the base image
+# Using the official Golang image as the base image
 FROM golang:1.16-alpine
 
-# Set the working directory inside the container
+# Setting the working directory inside the container
 WORKDIR /app
 
-# Copy the necessary files to the working directory
+# Copying the necessary files to the working directory
 COPY main.go ./
 COPY messages.proto ./
 COPY message/messages.pb.go ./message/
@@ -13,18 +13,18 @@ COPY annotations.proto ./
 COPY descriptor.proto ./
 COPY http(1).proto ./
 
-# Install protobuf compiler
+# Installing protobuf compiler
 RUN apk add --no-cache protobuf
 
-# Generate protobuf code
+# Generating protobuf code
 RUN protoc --go_out=. messages.proto
 RUN protoc --go_out=. --go-grpc_out=. messages.proto
 
-# Build the Go application
+# Building the Go application
 RUN go build -o rpc-server
 
-# Expose the port on which the server will listen
+# Exposing the port on which the server will listen
 EXPOSE 50051
 
-# Start the gRPC server
+# Starting the gRPC server
 CMD ["./rpc-server"]
