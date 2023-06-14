@@ -6,22 +6,29 @@ Welcome to My Project! This repository contains a simple implementation of an HT
 
 - `http-server/`: Contains the source code for the HTTP server.
   - `main.go`: Entry point for the HTTP server.
+  - `Dockerfile'
+  - `http.exe': Binary File.
 
 - `rpc-server/`: Contains the source code for the gRPC server.
   - `main.go`: Entry point for the gRPC server.
+  - `Dockerfile'
+  - `rpc.exe' : Binary File
   - `messages.proto`: Protocol Buffers definition file for message structures.
   - `message/`: Directory for generated message-related code.
     - `messages.pb.go`: Generated Go code for message structures.
     - `messages_grpc.pb.go`: Generated Go code for gRPC service.
   - `annotations.proto`: Protocol Buffers file for gRPC annotations.
   - `descriptor.proto`: Protocol Buffers file for service descriptors.
-  - `http.proto`: Protocol Buffers file for HTTP annotations.
+  - `http(1).proto`: Protocol Buffers file for HTTP annotations.
 
-- `go.yml`: YAML file for the Go service configuration.
+- `.github'
+  - 'workflows' 
+    - test.yml`: YAML file for the Go service configuration.
 
 - `docker-compose.yml`: YAML file for Docker Compose configuration.
 
 - `go.mod`, `go.sum`: Go module files.
+- `README.md'
 
 ## Prerequisites
 
@@ -42,9 +49,8 @@ Before running the servers, make sure you have the following prerequisites insta
 
 To run the HTTP server and gRPC server locally, follow these steps:
 
-1. Start the gRPC server: 
-
-
+1. Start the gRPC server: go run rpc-server/main.go
+2.  In a separate terminal, start the HTTP server: go run http-server/main.go
 
 ## Testing the Implementation
 
