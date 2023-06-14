@@ -27,13 +27,13 @@ jobs:
           go test ./...
 
       - name: Build and run HTTP server
-        working-directory: ./http-server
+        working-directory: ./http
         run: |
           go build -o http-server .
-          ./http-server
+          ./http
 
       - name: Build and run RPC server
-        working-directory: ./rpc-server
+        working-directory: ./rpc
         run: |
           go build -o rpc-server .
-          ./rpc-server
+          ./rpc
