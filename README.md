@@ -1,4 +1,4 @@
-#TikTok Immersion Programme 2023 
+# TikTok Immersion Programme 2023 
 
 Welcome to My Project! This repository contains a simple implementation of an HTTP server and a gRPC server in Go. The HTTP server exposes an endpoint for sending messages, while the gRPC server provides a method for pulling messages for a specific recipient.
 
