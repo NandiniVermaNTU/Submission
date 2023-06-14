@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package message;
 
-import "annotations (1).proto";
+import "annotations.proto";
 
 option go_package = "/message";
 
