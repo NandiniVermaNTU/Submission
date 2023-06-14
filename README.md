@@ -21,7 +21,7 @@ Welcome to My Project! This repository contains a simple implementation of an HT
   - `descriptor.proto`: Protocol Buffers file for service descriptors.
   - `http(1).proto`: Protocol Buffers file for HTTP annotations.
 
-- `.github'
+- `.github/'
   - 'workflows' 
     - test.yml`: YAML file for the Go service configuration.
 
