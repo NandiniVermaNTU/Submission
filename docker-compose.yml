@@ -1,25 +1,27 @@
 version: '3'
 services:
+  http-server:
+    build:
+      context: ./http-server
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - rpc-server
+
   rpc-server:
     build:
-      context: .
-      dockerfile: Dockerfile.rpc-server
+      context: ./rpc-server
+      dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - 50051:50051
     depends_on:
       - db
 
   db:
     image: mysql:latest
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=mydb
-      - MYSQL_USER=myuser
-      - MYSQL_PASSWORD=mypassword
-    volumes:
-      - dbdata:/var/lib/mysql
+      - MYSQL_ROOT_PASSWORD=tiktok@#123
+      - MYSQL_DATABASE=Assignment_Database
     ports:
-      - "3306:3306"
-
-volumes:
-  dbdata:
+      - 3306:3306
