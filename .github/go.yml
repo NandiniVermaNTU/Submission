@@ -1,26 +1,39 @@
-name: Go
+name: go
 
 on:
   push:
     branches:
-      - master
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up Go
+      - name: Set up Go 1.16
         uses: actions/setup-go@v2
         with:
-          go-version: 1.x # Replace with the desired Go version
+          go-version: 1.16
 
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Build
-        run: go build
+      - name: Build and test
+        run: |
+          go build ./...
+          go test ./...
 
-      - name: Test
-        run: go test ./...
+      - name: Build and run HTTP server
+        working-directory: ./http-server
+        run: |
+          go build -o http-server .
+          ./http-server
 
+      - name: Build and run RPC server
+        working-directory: ./rpc-server
+        run: |
+          go build -o rpc-server .
+          ./rpc-server
