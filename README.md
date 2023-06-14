@@ -6,13 +6,13 @@ Welcome to My Project! This repository contains a simple implementation of an HT
 
 - `http-server/`: Contains the source code for the HTTP server.
   - `main.go`: Entry point for the HTTP server.
-  - `Dockerfile'
-  - `http.exe': Binary File.
+  - `Dockerfile`
+  - `http.exe`: Binary File.
 
 - `rpc-server/`: Contains the source code for the gRPC server.
   - `main.go`: Entry point for the gRPC server.
-  - `Dockerfile'
-  - `rpc.exe' : Binary File
+  - `Dockerfile`
+  - `rpc.exe`: Binary File
   - `messages.proto`: Protocol Buffers definition file for message structures.
   - `message/`: Directory for generated message-related code.
     - `messages.pb.go`: Generated Go code for message structures.
@@ -22,13 +22,13 @@ Welcome to My Project! This repository contains a simple implementation of an HT
   - `http(1).proto`: Protocol Buffers file for HTTP annotations.
 
 - `.github/`
-  - 'workflows' 
-    - test.yml`: YAML file for the Go service configuration.
+  - `workflows`
+    - `test.yml`: YAML file for the Go service configuration.
 
 - `docker-compose.yml`: YAML file for Docker Compose configuration.
 
 - `go.mod`, `go.sum`: Go module files.
-- `README.md'
+- `README.md `
 
 ## Prerequisites
 
