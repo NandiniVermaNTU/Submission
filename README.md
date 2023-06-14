@@ -49,8 +49,8 @@ Before running the servers, make sure you have the following prerequisites insta
 
 To run the HTTP server and gRPC server locally, follow these steps:
 
-1. Start the gRPC server: go run rpc-server/main.go
-2.  In a separate terminal, start the HTTP server: go run http-server/main.go
+1. Start the gRPC server: go run rpc/main.go
+2.  In a separate terminal, start the HTTP server: go run http/main.go
 
 ## Testing the Implementation
 
